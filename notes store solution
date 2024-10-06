@@ -1,0 +1,44 @@
+class NotesStore {
+    constructor() {
+        this.completedNotes = [];
+        this.activeNotes = [];
+        this.otherNotes = [];
+    }
+
+    addNote(state, name) {
+        if (!name) {
+            throw new Error('Name cannot be empty');
+        }
+        if (!this.isValidState(state)) {
+            throw new Error(`Invalid state ${state}`);
+        }
+        this.getNotesList(state).push(name);
+    }
+
+    getNotes(state) {
+        if (!this.isValidState(state)) {
+            throw new Error(`Invalid state ${state}`);
+        }
+        return this.getNotesList(state);
+    }
+
+    getNotesList(state) {
+        if (state === 'completed') {
+            return this.completedNotes;
+        } else if (state === 'active') {
+            return this.activeNotes;
+        }
+        return this.otherNotes;
+    }
+
+    isValidState(state) {
+        return state === 'completed' || state === 'active' || state === 'others';
+    }
+}
+
+// Example usage:
+const notesStore = new NotesStore();
+notesStore.addNote('active', 'Buy groceries');
+notesStore.addNote('completed', 'Read a book');
+console.log(notesStore.getNotes('active')); // Output: ['Buy groceries']
+console.log(notesStore.getNotes('completed')); // Output: ['Read a book']
